@@ -346,7 +346,8 @@
             clearing : 4,
             account  : 10,
             control  : 10
-        }
+        },
+        zerofill: true
     },{
         name    : 'Swedbank',
         regex   : /^(8[0-9]{4})/,
@@ -355,7 +356,8 @@
             clearing : 5,
             account  : 10,
             control  : 10
-        }
+        },
+        zerofill: true
     },{
         name    : 'Ålandsbanken',
         regex   : /^(23[0-9][0-9])/,
@@ -380,7 +382,8 @@
         var n = number.replace(/\D/g, ''), i, bank, ctrlNum,
         for (i in banks) {
             bank = banks[i];
-            ctrlNum = n.substr(-bank.lengths.control, bank.lengths.control);
+            var bankNumber = (bank.zerofill) ? fillZeros(n, bank) : n;
+            ctrlNum = bankNumber.substr(-bank.lengths.control, bank.lengths.control);
             if (bank.regex.test(n) && ((bank.modulo === 11 && mod11(ctrlNum)) || (bank.modulo === 10 && mod10(ctrlNum)))) {
                 return {
                     bank_name       : bank.name,
@@ -425,6 +428,34 @@
         }
         return sum && sum % 11 === 0;
     };
+
+    var getClearingNumber = function(bankNumber, clearingLength) {
+        return bankNumber.substr(0, clearingLength);
+    };
+
+    var getAccountNumber = function(bankNumber, clearingLength) {
+        return bankNumber.substr(clearingLength);
+    };
+
+    /**
+     * Fyll ut Swedbanks bankkontonummer med nollor
+     *
+     * @param {String} number Bankkontonummer
+     * @param {Object} bank Bank object
+     * @returns {String} Bankkontonummer med nollor
+     */
+    var fillZeros = function (accountNumber, bank) {
+        var clearingNumber = getClearingNumber(accountNumber, bank.lengths.clearing);
+        var numberWithoutClearing = getAccountNumber(accountNumber, bank.lengths.clearing);
+        var zeroFillLength = bank.lengths.account - numberWithoutClearing.length;
+
+        if (zeroFillLength <= 0) {
+            return accountNumber;
+        }
+        var zeroFill = Array(zeroFillLength + 1).join('0');
+
+        return clearingNumber.concat(zeroFill, numberWithoutClearing);
+    }
 
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = kontonummer;
