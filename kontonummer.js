@@ -22,7 +22,7 @@
  */
 ;(function () {
     "use strict";
-    
+
     var banks = [{
         name    : 'Avanza Bank',
         regex   : /^(95[5-6][0-9])([0-9]+)$/,
@@ -368,7 +368,7 @@
             control  : 11
         }
     }];
-    
+
     /**
      * Kontrollerar och validerar ett bankkontonummer.
      * 
@@ -376,25 +376,84 @@
      * @returns {Object|Boolean}
      */
     var kontonummer = function(number) {
+        var n = number.replace(/\D/g, ''), i, bank, errors = [];
+        var matchedBanks = [];
+        var isValid = false;
+
         if (typeof number !== 'string') {
-            return false;
+            return {
+                isValid: false,
+            };
         }
-        var n = number.replace(/\D/g, ''), i, bank, ctrlNum, 
+
         for (i in banks) {
             bank = banks[i];
             var bankNumber = (bank.zerofill) ? fillZeros(n, bank) : n;
-            ctrlNum = bankNumber.substr(-bank.lengths.control, bank.lengths.control);
-            if (bank.regex.test(n) && ((bank.modulo === 11 && mod11(ctrlNum)) || (bank.modulo === 10 && mod10(ctrlNum)))) {
-                return {
-                    bank_name       : bank.name,
-                    clearing_number : n.substr(0, bank.lengths.clearing),
-                    account_number  : n.substr(bank.lengths.clearing, bank.lengths.account)
-                };
+
+            var numberChecksumValidation = validateChecksum(bank, bankNumber);
+            numberChecksumValidation.errors = numberChecksumValidation.errors.concat(validateLength(bank, bankNumber));
+            if (numberChecksumValidation.bankName) {
+                matchedBanks.push(numberChecksumValidation);
+
+                if (!numberChecksumValidation.errors.length) {
+                    isValid = true;
+                }
             }
         }
-        return false;
+
+
+        if (!matchedBanks.length) {
+            errors.push('unknown_clearing_number');
+        }
+
+        if (!isValid) {
+            return {
+                isValid: false,
+                errors: errors,
+                matchedBanks: matchedBanks
+            };
+        }
+
+        return {
+            isValid: isValid,
+            matchedBanks: matchedBanks
+        };
     };
-    
+
+    var validateLength = function(bank, bankNumber) {
+        var errors = [];
+
+        if (bank.regex.test(bankNumber)) {
+            if (bankNumber.length < bank.lengths.clearing + bank.lengths.account) {
+                errors.push('too_short');
+            } else if (bankNumber.length > bank.lengths.clearing + bank.lengths.account) {
+                errors.push('too_long');
+            }
+        }
+
+        return errors;
+    };
+
+    var validateChecksum = function(bank, bankNumber) {
+        var bankName = null;
+        var errors = [];
+        var ctrlNum = bankNumber.substr(-bank.lengths.control, bank.lengths.control);
+
+        if (bank.regex.test(bankNumber)) {
+            bankName = bank.name;
+            if (!(bank.modulo === 11 && mod11(ctrlNum)) && !(bank.modulo === 10 && mod10(ctrlNum))) {
+                errors.push('bad_checksum');
+            }
+        }
+
+        return {
+            errors: errors,
+            bankName: bankName,
+            clearing_number: getClearingNumber(bankNumber, bank),
+            account_number: getAccountNumber(bankNumber, bank)
+        };
+    };
+
     /**
      * Stödfunktion för att kontrollera mod10.
      * 
@@ -409,7 +468,7 @@
         }
         return sum && sum % 10 === 0;
     };
-    
+
     /**
      * Stödfunktion för att kontrollera mod11.
      * 
@@ -420,7 +479,7 @@
         var len = number.length, 
             sum = 0, 
             val, 
-            weights = [1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+        weights = [1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
         var arr = weights.splice(weights.length-len, weights.length-(weights.length-len));
         while (len) {
             val = parseInt(number.charAt(--len), 10);
