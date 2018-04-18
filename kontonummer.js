@@ -376,23 +376,86 @@
      * @returns {Object|Boolean}
      */
     var kontonummer = function(number) {
-        if (typeof number !== 'string') {
-            return false;
+        var is_valid = false;
+
+        if (!number || number.constructor !== String) {
+          return {
+            is_valid: is_valid,
+            errors: [ 'invalid_account_number' ],
+            matched_banks: []
+          };
         }
-        var n = number.replace(/\D/g, ''), i, bank, ctrlNum,
+
+        var n = number.replace(/\D/g, ''), i, bank, errors = [];
+        var matched_banks = [];
+
         for (i in banks) {
             bank = banks[i];
             var bankNumber = (bank.zerofill) ? fillZeros(n, bank) : n;
-            ctrlNum = bankNumber.substr(-bank.lengths.control, bank.lengths.control);
-            if (bank.regex.test(n) && ((bank.modulo === 11 && mod11(ctrlNum)) || (bank.modulo === 10 && mod10(ctrlNum)))) {
-                return {
-                    bank_name       : bank.name,
-                    clearing_number : n.substr(0, bank.lengths.clearing),
-                    account_number  : n.substr(bank.lengths.clearing, bank.lengths.account)
-                };
+
+            var numberChecksumValidation = validateChecksum(bank, bankNumber);
+            numberChecksumValidation.errors = numberChecksumValidation.errors.concat(validateLength(bank, bankNumber));
+            if (numberChecksumValidation.bank_name) {
+                matched_banks.push(numberChecksumValidation);
+
+                if (!numberChecksumValidation.errors.length) {
+                    is_valid = true;
+                }
             }
         }
-        return false;
+
+
+        if (!matched_banks.length) {
+            errors.push('unknown_clearing_number');
+        }
+
+        if (!is_valid) {
+            return {
+                is_valid: false,
+                errors: errors,
+                matched_banks: matched_banks
+            };
+        }
+
+        return {
+            is_valid: is_valid,
+            errors: [],
+            matched_banks: matched_banks
+        };
+    };
+
+    var validateLength = function(bank, bankNumber) {
+        var errors = [];
+
+        if (bank.regex.test(bankNumber)) {
+            if (bankNumber.length < bank.lengths.clearing + bank.lengths.account) {
+                errors.push('too_short');
+            } else if (bankNumber.length > bank.lengths.clearing + bank.lengths.account) {
+                errors.push('too_long');
+            }
+        }
+
+        return errors;
+    };
+
+    var validateChecksum = function(bank, bankNumber) {
+        var bank_name = null;
+        var errors = [];
+        var ctrlNum = bankNumber.substr(-bank.lengths.control, bank.lengths.control);
+
+        if (bank.regex.test(bankNumber)) {
+            bank_name = bank.name;
+            if (!(bank.modulo === 11 && mod11(ctrlNum)) && !(bank.modulo === 10 && mod10(ctrlNum))) {
+                errors.push('bad_checksum');
+            }
+        }
+
+        return {
+            errors: errors,
+            bank_name: bank_name,
+            clearing_number: getClearingNumber(bankNumber, bank.lengths.clearing),
+            account_number: getAccountNumber(bankNumber, bank.lengths.clearing)
+        };
     };
 
     /**
@@ -426,6 +489,7 @@
             val = parseInt(number.charAt(--len), 10);
             sum += arr[len] * val;
         }
+
         return sum && sum % 11 === 0;
     };
 
