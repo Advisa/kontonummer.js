@@ -1,0 +1,21 @@
+{
+  "name": "kontonummer",
+  "version": "1.0.0",
+  "description": "Kontonummer.js är ett bibliotek för att kontrollera och validera kontonummer för svenska banker. Biblioteket kan användas för att ta reda på vilken bank ett kontonummer tillhör, samt om kontonumret valideras som giltigt.",
+  "main": "kontonummer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Advisa/kontonummer.js.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Advisa/kontonummer.js/issues"
+  },
+  "engines": {
+    "node": ">=8"
+  }
+}
