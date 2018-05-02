@@ -54,15 +54,31 @@ console.log(result);
 /* Skriver ut följande objekt till konsolen:
 
 {
-  bank_name: "Forex Bank",
-  clearing_number: "9420", 
-  account_number: "4172385"
+  isValid:true,
+  errors: [],
+  matchedBanks: [
+    {
+      bank_name: "Forex Bank",
+      clearing_number: "9420", 
+      account_number: "4172385",
+      errors: [],
+    }
+  ]
 }
 */
 ```
 ```javascript
 var result = kontonummer('123456789');
-console.log(result); // false
+console.log(result);
+
+/* Skriver ut följande objekt till konsolen:
+
+{
+  isValid: false,
+  errors: ['unknown_clearing_number'],
+  matchedBanks: []
+}
+*/
 ```
 
 # Uppdateringar
