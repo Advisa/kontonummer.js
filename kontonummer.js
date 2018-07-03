@@ -441,7 +441,7 @@
     var validateChecksum = function(bank, bankNumber) {
         var bank_name = null;
         var errors = [];
-        var ctrlNum = bankNumber.substr(-bank.lengths.control, bank.lengths.control);
+        var ctrlNum = getCtrlNum(bank.lengths.control, bankNumber);
 
         if (bank.regex.test(bankNumber)) {
             bank_name = bank.name;
@@ -456,6 +456,16 @@
             clearing_number: getClearingNumber(bankNumber, bank.lengths.clearing),
             account_number: getAccountNumber(bankNumber, bank.lengths.clearing)
         };
+    };
+
+    /**
+     * @param {string} bankNumber
+     * @param {object} bank
+     *
+     * @return {string}
+     */
+    var getCtrlNum = function(controlLength, bankNumber) {
+      return bankNumber.substr(-controlLength, controlLength);
     };
 
     /**
