@@ -232,19 +232,10 @@
         }
     },{
         name    : 'Nordea',
-        regex   : /^(3300|3782)([0-9]+)$/,
+        regex   : /^(3300|3782)/,
         modulo  : 10,
         lengths : {
             clearing : 4,
-            account  : 10,
-            control  : 10
-        }
-    },{
-        name    : 'Nordea',
-        regex   : /^([0-9][0-9])(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])([0-9]+)$/,
-        modulo  : 10,
-        lengths : {
-            clearing : 0,
             account  : 10,
             control  : 10
         }
