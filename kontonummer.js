@@ -520,7 +520,25 @@
         var zeroFill = Array(zeroFillLength + 1).join('0');
 
         return clearingNumber.concat(zeroFill, numberWithoutClearing);
+    };
+
+
+    function protectTheFuncAndAppendProp (prop, fn) {
+      Object.defineProperty(kontonummer, '_' + prop, {
+        configurable: false,
+        writable: false,
+        value: fn
+      });
     }
+
+    protectTheFuncAndAppendProp('mod10', mod10);
+    protectTheFuncAndAppendProp('mod11', mod11);
+    protectTheFuncAndAppendProp('getClearingNumber', getClearingNumber);
+    protectTheFuncAndAppendProp('getAccountNumber', getAccountNumber);
+    protectTheFuncAndAppendProp('fillZeros', fillZeros);
+    protectTheFuncAndAppendProp('getCtrlNum', getCtrlNum);
+    protectTheFuncAndAppendProp('validateChecksum', validateChecksum);
+    protectTheFuncAndAppendProp('validateLength', validateLength);
 
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = kontonummer;
