@@ -1,31 +1,31 @@
 /**
- * Kontonummer.js är ett bibliotek för att kontroller och validera svenska 
- * bankkontonummer. Biblioteket kan användas för att ta reda på vilken bank ett 
- * kontonummer tillhör, samt om kontonumret valideras som giltigt enligt 
+ * Kontonummer.js är ett bibliotek för att kontroller och validera svenska
+ * bankkontonummer. Biblioteket kan användas för att ta reda på vilken bank ett
+ * kontonummer tillhör, samt om kontonumret valideras som giltigt enligt
  * bankerns standard.
- * 
+ *
  * https://github.com/jop-io/kontonummer.js
- * 
- * Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige. 
+ *
+ * Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige.
  * För närvarande stöds följande banker:
- * 
- *  Amfa Bank, Avanza Bank, BlueStep Finans, BNP, Citibank, Danske Bank, 
- *  DnB Bank, Ekobanken, Erik Penser Bankaktiebolag, Forex Bank, Handelsbanken, 
- *  ICA Banken, IKANO Banken, JAK Medlemsbank, Landshypotek, Lån och Spar Bank 
- *  Sverige, Länsförsäkringar Bank, Marginalen Bank, Nordax Bank, Nordea, 
- *  Nordnet Bank, Resurs Bank, Riksgälden, Royal Bank of Scotland, Santander 
- *  Consumer Bank, SBAB, SEB, Skandiabanken, Sparbanken Syd, Swedbank, 
+ *
+ *  Amfa Bank, Avanza Bank, BlueStep Finans, BNP, Citibank, Danske Bank,
+ *  DnB Bank, Ekobanken, Erik Penser Bankaktiebolag, Forex Bank, Handelsbanken,
+ *  ICA Banken, IKANO Banken, JAK Medlemsbank, Landshypotek, Lån och Spar Bank
+ *  Sverige, Länsförsäkringar Bank, Marginalen Bank, Nordax Bank, Nordea,
+ *  Nordnet Bank, Resurs Bank, Riksgälden, Royal Bank of Scotland, Santander
+ *  Consumer Bank, SBAB, SEB, Skandiabanken, Sparbanken Syd, Swedbank,
  *  Ålandsbanken
- * 
+ *
  * Licens: MIT
  * Författare: @jop-io, http://jop.io
  */
 ;(function (window, undefined) {
     "use strict";
-    
+
     /**
      * Kontrollerar och validerar ett bankkontonummer.
-     * 
+     *
      * @param {String} number Bankkontonummer
      * @returns {Object|Boolean}
      */
@@ -33,7 +33,7 @@
         if (typeof number !== 'string') {
             return false;
         }
-        var n = number.replace(/\D/g, ''), i, bank, ctrlNum, 
+        var n = number.replace(/\D/g, ''), i, bank, ctrlNum,
         banks = [{
             name    : 'Avanza Bank',
             regex   : /^(95[5-6][0-9])([0-9]{7})$/,
@@ -377,7 +377,7 @@
                 control  : 11
             }
         }];
-    
+
         for (i in banks) {
             bank = banks[i];
             ctrlNum = n.substr(-bank.lengths.control, bank.lengths.control);
@@ -391,10 +391,10 @@
         }
         return false;
     };
-    
+
     /**
      * Stödfunktion för att kontrollera mod10.
-     * 
+     *
      * @param {String} number Bankkontonummer
      * @returns {Boolean}
      */
@@ -406,17 +406,17 @@
         }
         return sum && sum % 10 === 0;
     };
-    
+
     /**
      * Stödfunktion för att kontrollera mod11.
-     * 
+     *
      * @param {String} number Bankkontonummer
      * @returns {Boolean}
      */
     var mod11 = function (number) {
-        var len = number.length, 
-            sum = 0, 
-            val, 
+        var len = number.length,
+            sum = 0,
+            val,
             weights = [1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
         var arr = weights.splice(weights.length-len, weights.length-(weights.length-len));
         while (len) {
