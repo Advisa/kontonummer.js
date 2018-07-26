@@ -37,7 +37,7 @@ Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige. F
 * Sparbanken Syd
 * Swedbank
 * Ålandsbanken
- 
+
 # Demo
 Ett demo finns tillgängligt här: [http://jop.io/projects/kontonummer-js](http://jop.io/projects/kontonummer-js)
 
@@ -54,18 +54,57 @@ console.log(result);
 /* Skriver ut följande objekt till konsolen:
 
 {
-  bank_name: "Forex Bank",
-  clearing_number: "9420", 
-  account_number: "4172385"
+  is_valid: true,
+  errors: [],
+  matched_banks: [
+    {
+      bank_name: "Forex Bank",
+      clearing_number: "9420",
+      account_number: "4172385",
+      errors: [],
+    }
+  ]
 }
 */
 ```
 ```javascript
 var result = kontonummer('123456789');
-console.log(result); // false
+console.log(result);
+
+/* Skriver ut följande objekt till konsolen:
+
+{
+  is_valid: false,
+  errors: ["unknown_clearing_number"],
+  matched_banks: []
+}
+*/
+```
+```javascript
+var result = kontonummer('9420, 000 00 00');
+console.log(result);
+
+/* Skriver ut följande objekt till konsolen:
+
+{
+  is_valid: false,
+  errors: [],
+  matched_banks: [
+    {
+      errors: [
+        "bad_checksum"
+      ],
+      bank_name: "Forex Bank",
+      clearing_number: "9420",
+      account_number: "0000000"
+    }
+  ]
+}
+*/
 ```
 
 # Uppdateringar
+* 2018-07-26: Gör om till Node.js-modul, returnera mer detaljerade felkoder, hantera nollutfyllnad för Swedbank & lägg till tester
 * 2017-12-08: Justerade kontroll av vissa clearingnummer för Nordea (tack till Staffan Garhammar som hittade detta!)
 * 2016-06-18: Adderade Riksgälden
 
