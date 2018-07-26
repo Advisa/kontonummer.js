@@ -104,6 +104,7 @@ console.log(result);
 ```
 
 # Uppdateringar
+* 2018-07-26: Gör om till Node.js-modul, returnera mer detaljerade felkoder, hantera nollutfyllnad för Swedbank & lägg till tester
 * 2017-12-08: Justerade kontroll av vissa clearingnummer för Nordea (tack till Staffan Garhammar som hittade detta!)
 * 2016-06-18: Adderade Riksgälden
 
