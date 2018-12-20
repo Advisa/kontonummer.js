@@ -350,6 +350,16 @@
         },
         zerofill: true
     },{
+        name    : 'Swedbank',
+        regex   : /^(8[0-9]{3})/,
+        modulo  : 10,
+        lengths : {
+            clearing : 4,
+            account  : 10,
+            control  : 10
+        },
+        zerofill: true
+    },{
         name    : 'Ålandsbanken',
         regex   : /^(23[0-9][0-9])/,
         modulo  : 11,
