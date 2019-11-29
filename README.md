@@ -20,10 +20,12 @@ Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige. F
 * ICA Banken
 * IKANO Banken
 * JAK Medlemsbank
+* Klarna Bank
 * Landshypotek
 * Lån och Spar Bank Sverige
 * Länsförsäkringar Bank
 * Marginalen Bank
+* MedMera Bank
 * Nordax Bank
 * Nordea
 * Nordnet Bank

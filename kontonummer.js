@@ -135,6 +135,11 @@
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
+        name    : 'Klarna Bank',
+        regex   : /^(978[0-9])/,
+        modulo  : 11,
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
+    },{
         name    : 'Landshypotek',
         regex   : /^(939[0-9])/,
         modulo  : 11,
@@ -159,6 +164,11 @@
         regex   : /^(923[0-9])/,
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
+    },{
+        name    : 'MedMera Bank',
+        regex   : /^(965[0-9])/,
+        modulo  : 11,
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Nordax Bank',
         regex   : /^(964[0-9])/,
