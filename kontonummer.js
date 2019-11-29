@@ -241,7 +241,7 @@
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Swedbank',
-        regex   : /^(93[0-2][0-9])/,
+        regex   : /^(93[0-4][0-9])/,
         modulo  : 10,
         lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[1],
         zerofill: true
