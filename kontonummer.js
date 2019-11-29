@@ -75,7 +75,7 @@
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
-        name    : 'BNP',
+        name    : 'BNP Paribas',
         regex   : /^(947[0-9])/,
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
@@ -95,7 +95,7 @@
         modulo  : 10,
         lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[1]
     },{
-        name    : 'DnB Bank',
+        name    : 'DNB Bank',
         regex   : /^(919[0-9]|926[0-9])/,
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
@@ -105,7 +105,7 @@
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
-        name    : 'Erik Penser Bankaktiebolag',
+        name    : 'Erik Penser',
         regex   : /^(959[0-9])/,
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
@@ -145,7 +145,7 @@
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
-        name    : 'Lån och Spar Bank Sverige',
+        name    : 'Lån & Spar Bank Sverige',
         regex   : /^(963[0-9])/,
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
