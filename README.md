@@ -6,7 +6,6 @@ Bibliotekets parserings- och valideringsregler bygger på dessa dokument:
 * [Förteckning av clering- och bankkontonummer](https://www.nordea.se/Images/39-112644/F%C3%B6rteckning%20clearing-%20och%20bankkontonummer.pdf) (Nordea)
 
 Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige. För närvarande stöds följande banker:
-* Amfa Bank
 * Avanza Bank
 * BlueStep Finans
 * BNP
@@ -36,6 +35,7 @@ Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige. F
 * SEB
 * Skandiabanken
 * Sparbanken Syd
+* Svea Bank
 * Swedbank
 * Ålandsbanken
 

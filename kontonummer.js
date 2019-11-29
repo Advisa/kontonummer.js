@@ -65,10 +65,10 @@
         modulo  : 11,
         lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
-        name    : 'Amfa Bank',
+        name    : 'Svea Bank',
         regex   : /^(966[0-9])/,
         modulo  : 11,
-        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'BlueStep Finans',
         regex   : /^(968[0-9])/,
