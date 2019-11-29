@@ -29,7 +29,6 @@ Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige. F
 * Nordnet Bank
 * Resurs Bank
 * Riksgälden
-* Royal Bank of Scotland
 * Santander Consumer Bank
 * SBAB
 * SEB

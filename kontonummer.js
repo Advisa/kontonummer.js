@@ -267,15 +267,6 @@
             control  : 10
         }
     },{
-        name    : 'Royal Bank of Scotland',
-        regex   : /^(909[0-9])/,
-        modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
-    },{
         name    : 'Santander Consumer Bank',
         regex   : /^(946[0-9])/,
         modulo  : 11,

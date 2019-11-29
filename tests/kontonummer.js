@@ -193,7 +193,7 @@ describe('Kontonummer suite', () => {
     });
 
     it('should not throw on String argument passed', () => {
-      const fakeAccountNumber = '90917261730';
+      const fakeAccountNumber = '91800123456782';
       const result = kontonummer(fakeAccountNumber);
 
       chai.assert.isTrue(
