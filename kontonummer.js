@@ -205,6 +205,11 @@
         modulo  : 10,
         lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[1]
     },{
+        name    : 'Riksgälden',
+        regex   : /^(988[0-9])/,
+        modulo  : 11,
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
+    },{
         name    : 'Santander Consumer Bank',
         regex   : /^(946[0-9])/,
         modulo  : 11,
