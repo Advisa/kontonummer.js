@@ -39,9 +39,6 @@ Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige. F
 * Swedbank
 * Ålandsbanken
 
-# Demo
-Ett demo finns tillgängligt här: [http://jop.io/projects/kontonummer-js](http://jop.io/projects/kontonummer-js)
-
 # Installation
 ```javascript
 <script src="kontonummer.min.js"></script>

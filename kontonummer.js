@@ -18,7 +18,7 @@
  *  Ålandsbanken
  *
  * Licens: MIT
- * Författare: @jop-io, http://jop.io
+ * Författare: @jop-io
  */
 ;(function () {
     "use strict";
