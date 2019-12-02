@@ -6,16 +6,7 @@
  *
  * https://github.com/jop-io/kontonummer.js
  *
- * Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige.
- * För närvarande stöds följande banker:
- *
- *  Amfa Bank, Avanza Bank, BlueStep Finans, BNP, Citibank, Danske Bank,
- *  DnB Bank, Ekobanken, Erik Penser Bankaktiebolag, Forex Bank, Handelsbanken,
- *  ICA Banken, IKANO Banken, JAK Medlemsbank, Landshypotek, Lån och Spar Bank
- *  Sverige, Länsförsäkringar Bank, Marginalen Bank, Nordax Bank, Nordea,
- *  Nordnet Bank, Resurs Bank, Riksgälden, Royal Bank of Scotland, Santander
- *  Consumer Bank, SBAB, SEB, Skandiabanken, Sparbanken Syd, Swedbank,
- *  Ålandsbanken
+ * Målsättningen är att stödja samtliga banker som är verksamma i Sverige.
  *
  * Licens: MIT
  * Författare: @jop-io
