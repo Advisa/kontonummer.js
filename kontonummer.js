@@ -241,7 +241,8 @@
         regex   : /^(8[0-9]{4})/,
         modulo  : 10,
         lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[3],
-        zerofill: true
+        zerofill: true,
+        warnOnBadChecksum: true // Special swedbank accounts can cause checksum errors which we conditionally want to suppress
     },{
         name    : 'Ålandsbanken',
         regex   : /^(23[0-9][0-9])/,
@@ -262,12 +263,14 @@
           return {
             is_valid: is_valid,
             errors: [ 'invalid_account_number' ],
-            matched_banks: []
+            matched_banks: [],
+            has_warnings: false
           };
         }
 
         var n = number.replace(/\D/g, ''), i, bank, errors = [];
         var matched_banks = [];
+        var warnings = [];
 
         for (i in banks) {
             bank = banks[i];
@@ -275,6 +278,7 @@
 
             var numberChecksumValidation = validateChecksum(bank, bankNumber);
             numberChecksumValidation.errors = numberChecksumValidation.errors.concat(validateLength(bank, bankNumber));
+            warnings = warnings.concat(numberChecksumValidation.warnings);
             if (numberChecksumValidation.bank_name) {
                 matched_banks.push(numberChecksumValidation);
 
@@ -293,14 +297,16 @@
             return {
                 is_valid: false,
                 errors: errors,
-                matched_banks: matched_banks
+                matched_banks: matched_banks,
+                has_warnings: Boolean(warnings.length)
             };
         }
 
         return {
             is_valid: is_valid,
             errors: [],
-            matched_banks: matched_banks
+            matched_banks: matched_banks,
+            has_warnings: Boolean(warnings.length)
         };
     };
 
@@ -321,12 +327,17 @@
     var validateChecksum = function(bank, bankNumber) {
         var bank_name = null;
         var errors = [];
+        var warnings = [];
         var ctrlNum = getCtrlNum(bank.lengths.control, bankNumber);
 
         if (bank.regex.test(bankNumber)) {
             bank_name = bank.name;
             if (!(bank.modulo === 11 && mod11(ctrlNum)) && !(bank.modulo === 10 && mod10(ctrlNum))) {
-                errors.push('bad_checksum');
+                if (bank.warnOnBadChecksum) {
+                    warnings.push('bad_checksum');
+                } else {
+                    errors.push('bad_checksum');
+                }
             }
         }
 
@@ -334,7 +345,8 @@
             errors: errors,
             bank_name: bank_name,
             clearing_number: getClearingNumber(bankNumber, bank.lengths.clearing),
-            account_number: getAccountNumber(bankNumber, bank.lengths.clearing)
+            account_number: getAccountNumber(bankNumber, bank.lengths.clearing),
+            warnings: warnings
         };
     };
 
