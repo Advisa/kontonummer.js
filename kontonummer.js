@@ -23,332 +23,224 @@
 ;(function () {
     "use strict";
 
+    var ACCOUNT_NUMBER_TYPE = {
+        1: {
+            COMMENT: {
+                1: {
+                    clearing: 4,
+                    account: 7,
+                    control: 10
+                },
+                2: {
+                    clearing: 4,
+                    account: 7,
+                    control: 11
+                }
+            }
+        },
+        2: {
+            COMMENT: {
+                1: {
+                    clearing: 4,
+                    account: 10,
+                    control: 10
+                },
+                2: {
+                    clearing: 4,
+                    account: 9,
+                    control: 9
+                },
+                3: {
+                    clearing: 5,
+                    account: 10,
+                    control: 10
+                }
+            }
+        }
+    };
+
     var banks = [{
         name    : 'Avanza Bank',
         regex   : /^(95[5-6][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Amfa Bank',
         regex   : /^(966[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'BlueStep Finans',
         regex   : /^(968[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'BNP',
         regex   : /^(947[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Citibank',
         regex   : /^(904[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Danske Bank',
         regex   : /^(1[2-3][0-9][0-9]|24[0-9][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Danske Bank',
         regex   : /^(918[0-9])/,
         modulo  : 10,
-        lengths : {
-            clearing : 4,
-            account  : 10,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[1]
     },{
         name    : 'DnB Bank',
         regex   : /^(919[0-9]|926[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Ekobanken',
         regex   : /^(970[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Erik Penser Bankaktiebolag',
         regex   : /^(959[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Forex Bank',
         regex   : /^(94[0-4][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Handelsbanken',
         regex   : /^(6[0-9][0-9][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 9,
-            control  : 9
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[2]
     },{
         name    : 'ICA Banken',
         regex   : /^(927[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'IKANO Banken',
         regex   : /^(917[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'JAK Medlemsbank',
         regex   : /^(967[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Landshypotek',
         regex   : /^(939[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Lån och Spar Bank Sverige',
         regex   : /^(963[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Länsförsäkringar Bank',
         regex   : /^(340[0-9]|906[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Länsförsäkringar Bank',
         regex   : /^(902[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Marginalen Bank',
         regex   : /^(923[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Nordax Bank',
         regex   : /^(964[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Nordea',
         regex   : /^(11[0-9][0-9]|1[4-9][0-9][0-9]|20[0-9][0-9]|3[0-2][0-9][0-9]|330[1-9]|33[1-9][0-9]|34[1-9][0-9]|3[5-9][0-9][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Nordea',
         regex   : /^(4[0-9][0-9][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Nordea',
         regex   : /^(3300|3782)/,
         modulo  : 10,
-        lengths : {
-            clearing : 4,
-            account  : 10,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[1]
     },{
         name    : 'Nordnet Bank',
         regex   : /^(910[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Resurs Bank',
         regex   : /^(928[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Riksgälden',
         regex   : /^(989[0-9])/,
         modulo  : 10,
-        lengths : {
-            clearing : 4,
-            account  : 10,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[1]
     },{
         name    : 'Santander Consumer Bank',
         regex   : /^(946[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'SBAB',
         regex   : /^(925[0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'SEB',
         regex   : /^(5[0-9][0-9][0-9]|912[0-4]|91[3-4][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Skandiabanken',
         regex   : /^(91[5-6][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     },{
         name    : 'Sparbanken Syd',
         regex   : /^(957[0-9])/,
         modulo  : 10,
-        lengths : {
-            clearing : 4,
-            account  : 10,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[1]
     },{
         name    : 'Swedbank',
         regex   : /^(7[0-9][0-9][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 10
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[1]
     },{
         name    : 'Swedbank',
         regex   : /^(93[0-2][0-9])/,
         modulo  : 10,
-        lengths : {
-            clearing : 4,
-            account  : 10,
-            control  : 10
-        },
+        lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[1],
         zerofill: true
     },{
         name    : 'Swedbank',
         regex   : /^(8[0-9]{4})/,
         modulo  : 10,
-        lengths : {
-            clearing : 5,
-            account  : 10,
-            control  : 10
-        },
+        lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[3],
         zerofill: true
     },{
         name    : 'Ålandsbanken',
         regex   : /^(23[0-9][0-9])/,
         modulo  : 11,
-        lengths : {
-            clearing : 4,
-            account  : 7,
-            control  : 11
-        }
+        lengths : ACCOUNT_NUMBER_TYPE[1].COMMENT[2]
     }];
 
     /**
