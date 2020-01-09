@@ -240,7 +240,7 @@
         name    : 'Swedbank',
         regex   : /^(8[0-9]{4})/,
         modulo  : 10,
-        lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[3],
+        lengths : Object.assign({}, ACCOUNT_NUMBER_TYPE[2].COMMENT[3],{ min_account: 6 }),
         zerofill: true,
         warnOnBadChecksum: true // Special swedbank accounts can cause checksum errors which we conditionally want to suppress
     },{
@@ -310,13 +310,24 @@
         };
     };
 
-    var validateLength = function(bank, bankNumber) {
+    var removeNumberZeroPadding = function(numberAsString) {
+        return String(parseInt(numberAsString, 10));
+    }
+
+    var validateLength = function(bank, normalizedBankAccountNumber) {
         var errors = [];
 
-        if (bank.regex.test(bankNumber)) {
-            if (bankNumber.length < bank.lengths.clearing + bank.lengths.account) {
+        if (bank.regex.test(normalizedBankAccountNumber)) {
+            var minBankNumberLength = bank.lengths.clearing + bank.lengths.account;
+            var maxBankNumberLength = bank.lengths.clearing + bank.lengths.account;
+            var accountNumber = getAccountNumber(normalizedBankAccountNumber, bank.lengths.clearing);
+            var significantAccountNumber = removeNumberZeroPadding(accountNumber);
+
+            if (bank.lengths.min_account && significantAccountNumber.length < bank.lengths.min_account) {
                 errors.push('too_short');
-            } else if (bankNumber.length > bank.lengths.clearing + bank.lengths.account) {
+            } else if (normalizedBankAccountNumber.length < minBankNumberLength) {
+                errors.push('too_short');
+            } else if (normalizedBankAccountNumber.length > maxBankNumberLength) {
                 errors.push('too_long');
             }
         }

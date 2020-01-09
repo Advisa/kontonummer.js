@@ -179,6 +179,28 @@ describe('Kontonummer suite', () => {
       const expected = ['too_long'];
       chai.assert.deepEqual(expected, result);
     });
+
+
+    it('should return object with warning too_short for Swedbank with min_account', () => {
+      const mockBankSwedbank = {
+        name    : 'Swedbank',
+        regex   : /^(8[0-9]{4})/,
+        modulo  : 10,
+        lengths : {
+          clearing : 5,
+          account  : 10,
+          control  : 10,
+          min_account: 6,
+        },
+        zerofill: true,
+        warnOnBadChecksum: true,
+      };
+      const fakeAccountNumber = '8002123452';
+      const result = kontonummer._validateLength(mockBankSwedbank, fakeAccountNumber);
+
+      const expected = ['too_short'];
+      chai.assert.deepEqual(expected, result);
+    });
   });
 
   describe('mod10()', () => {
@@ -285,6 +307,14 @@ describe('Kontonummer suite', () => {
         kontonummer('800212345212358'),
         {
           has_warnings: true,
+        }
+      );
+    });
+    it('should return object with errors too_short on a swedbank account with short account length', () => {
+      chai.assert.deepInclude(
+        kontonummer('800212345').matched_banks[0],
+        {
+          errors: [ 'too_short' ],
         }
       );
     });
