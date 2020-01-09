@@ -240,8 +240,9 @@
         name    : 'Swedbank',
         regex   : /^(8[0-9]{4})/,
         modulo  : 10,
-        lengths : ACCOUNT_NUMBER_TYPE[2].COMMENT[3],
-        zerofill: true
+        lengths : Object.assign({}, ACCOUNT_NUMBER_TYPE[2].COMMENT[3],{ min_account: 6 }),
+        zerofill: true,
+        warnOnBadChecksum: true // Special swedbank accounts can cause checksum errors which we conditionally want to suppress
     },{
         name    : 'Ålandsbanken',
         regex   : /^(23[0-9][0-9])/,
@@ -262,12 +263,14 @@
           return {
             is_valid: is_valid,
             errors: [ 'invalid_account_number' ],
-            matched_banks: []
+            matched_banks: [],
+            has_warnings: false
           };
         }
 
         var n = number.replace(/\D/g, ''), i, bank, errors = [];
         var matched_banks = [];
+        var warnings = [];
 
         for (i in banks) {
             bank = banks[i];
@@ -275,6 +278,7 @@
 
             var numberChecksumValidation = validateChecksum(bank, bankNumber);
             numberChecksumValidation.errors = numberChecksumValidation.errors.concat(validateLength(bank, bankNumber));
+            warnings = warnings.concat(numberChecksumValidation.warnings);
             if (numberChecksumValidation.bank_name) {
                 matched_banks.push(numberChecksumValidation);
 
@@ -293,24 +297,37 @@
             return {
                 is_valid: false,
                 errors: errors,
-                matched_banks: matched_banks
+                matched_banks: matched_banks,
+                has_warnings: Boolean(warnings.length)
             };
         }
 
         return {
             is_valid: is_valid,
             errors: [],
-            matched_banks: matched_banks
+            matched_banks: matched_banks,
+            has_warnings: Boolean(warnings.length)
         };
     };
 
-    var validateLength = function(bank, bankNumber) {
+    var removeNumberZeroPadding = function(numberAsString) {
+        return String(parseInt(numberAsString, 10));
+    }
+
+    var validateLength = function(bank, normalizedBankAccountNumber) {
         var errors = [];
 
-        if (bank.regex.test(bankNumber)) {
-            if (bankNumber.length < bank.lengths.clearing + bank.lengths.account) {
+        if (bank.regex.test(normalizedBankAccountNumber)) {
+            var minBankNumberLength = bank.lengths.clearing + bank.lengths.account;
+            var maxBankNumberLength = bank.lengths.clearing + bank.lengths.account;
+            var accountNumber = getAccountNumber(normalizedBankAccountNumber, bank.lengths.clearing);
+            var significantAccountNumber = removeNumberZeroPadding(accountNumber);
+
+            if (bank.lengths.min_account && significantAccountNumber.length < bank.lengths.min_account) {
                 errors.push('too_short');
-            } else if (bankNumber.length > bank.lengths.clearing + bank.lengths.account) {
+            } else if (normalizedBankAccountNumber.length < minBankNumberLength) {
+                errors.push('too_short');
+            } else if (normalizedBankAccountNumber.length > maxBankNumberLength) {
                 errors.push('too_long');
             }
         }
@@ -321,12 +338,17 @@
     var validateChecksum = function(bank, bankNumber) {
         var bank_name = null;
         var errors = [];
+        var warnings = [];
         var ctrlNum = getCtrlNum(bank.lengths.control, bankNumber);
 
         if (bank.regex.test(bankNumber)) {
             bank_name = bank.name;
             if (!(bank.modulo === 11 && mod11(ctrlNum)) && !(bank.modulo === 10 && mod10(ctrlNum))) {
-                errors.push('bad_checksum');
+                if (bank.warnOnBadChecksum) {
+                    warnings.push('bad_checksum');
+                } else {
+                    errors.push('bad_checksum');
+                }
             }
         }
 
@@ -334,7 +356,8 @@
             errors: errors,
             bank_name: bank_name,
             clearing_number: getClearingNumber(bankNumber, bank.lengths.clearing),
-            account_number: getAccountNumber(bankNumber, bank.lengths.clearing)
+            account_number: getAccountNumber(bankNumber, bank.lengths.clearing),
+            warnings: warnings
         };
     };
 

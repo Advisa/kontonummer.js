@@ -103,6 +103,7 @@ describe('Kontonummer suite', () => {
         bank_name: 'Citibank',
         clearing_number: '9044',
         account_number: '123456789',
+        warnings: [],
       };
       const result = kontonummer._validateChecksum(mockBank, fakeAccountNumber);
 
@@ -116,11 +117,39 @@ describe('Kontonummer suite', () => {
         bank_name: 'Citibank',
         clearing_number: '9044',
         account_number: '12345',
+        warnings: [],
       };
       const result = kontonummer._validateChecksum(mockBank, fakeAccountNumber);
 
       chai.assert.deepEqual(expected, result);
     });
+
+    it('should return object with warning bad_checksum for Swedbank', () => {
+      const mockBankSwedbank = {
+        name    : 'Swedbank',
+        regex   : /^(8[0-9]{4})/,
+        modulo  : 10,
+        lengths : {
+          clearing : 5,
+          account  : 10,
+          control  : 10
+        },
+        zerofill: true,
+        warnOnBadChecksum: true,
+      };
+      const fakeAccountNumber = '800212345212358';
+      const expected = {
+        errors: [],
+        bank_name: 'Swedbank',
+        clearing_number: '80021',
+        account_number: '2345212358',
+        warnings: ['bad_checksum'],
+      };
+      const result = kontonummer._validateChecksum(mockBankSwedbank, fakeAccountNumber);
+
+      chai.assert.deepEqual(expected, result);
+    });
+
   });
 
   describe('validateLength()', () => {
@@ -148,6 +177,28 @@ describe('Kontonummer suite', () => {
       const result = kontonummer._validateLength(mockBank, fakeAccountNumber);
 
       const expected = ['too_long'];
+      chai.assert.deepEqual(expected, result);
+    });
+
+
+    it('should return object with warning too_short for Swedbank with min_account', () => {
+      const mockBankSwedbank = {
+        name    : 'Swedbank',
+        regex   : /^(8[0-9]{4})/,
+        modulo  : 10,
+        lengths : {
+          clearing : 5,
+          account  : 10,
+          control  : 10,
+          min_account: 6,
+        },
+        zerofill: true,
+        warnOnBadChecksum: true,
+      };
+      const fakeAccountNumber = '8002123452';
+      const result = kontonummer._validateLength(mockBankSwedbank, fakeAccountNumber);
+
+      const expected = ['too_short'];
       chai.assert.deepEqual(expected, result);
     });
   });
@@ -187,7 +238,8 @@ describe('Kontonummer suite', () => {
         {
           is_valid: false,
           errors: ['invalid_account_number'],
-          matched_banks: []
+          matched_banks: [],
+          has_warnings: false,
         }
       );
     });
@@ -208,7 +260,8 @@ describe('Kontonummer suite', () => {
         {
           is_valid: false,
           errors: ['invalid_account_number'],
-          matched_banks: []
+          matched_banks: [],
+          has_warnings: false,
         }
       );
       chai.assert.deepEqual(
@@ -216,7 +269,8 @@ describe('Kontonummer suite', () => {
         {
           is_valid: false,
           errors: ['invalid_account_number'],
-          matched_banks: []
+          matched_banks: [],
+          has_warnings: false,
         }
       );
       chai.assert.deepEqual(
@@ -224,7 +278,8 @@ describe('Kontonummer suite', () => {
         {
           is_valid: false,
           errors: ['invalid_account_number'],
-          matched_banks: []
+          matched_banks: [],
+          has_warnings: false,
         }
       );
       chai.assert.deepEqual(
@@ -232,7 +287,8 @@ describe('Kontonummer suite', () => {
         {
           is_valid: false,
           errors: ['invalid_account_number'],
-          matched_banks: []
+          matched_banks: [],
+          has_warnings: false,
         }
       );
       chai.assert.deepEqual(
@@ -240,7 +296,25 @@ describe('Kontonummer suite', () => {
         {
           is_valid: false,
           errors: ['invalid_account_number'],
-          matched_banks: []
+          matched_banks: [],
+          has_warnings: false,
+        }
+      );
+    });
+
+    it('should return object with has_warnings true on a swedbank account with invalid checksum', () => {
+      chai.assert.include(
+        kontonummer('800212345212358'),
+        {
+          has_warnings: true,
+        }
+      );
+    });
+    it('should return object with errors too_short on a swedbank account with short account length', () => {
+      chai.assert.deepInclude(
+        kontonummer('800212345').matched_banks[0],
+        {
+          errors: [ 'too_short' ],
         }
       );
     });
