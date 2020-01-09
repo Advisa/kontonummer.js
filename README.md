@@ -6,7 +6,6 @@ Bibliotekets parserings- och valideringsregler bygger på dessa dokument:
 * [Förteckning av clering- och bankkontonummer](https://www.nordea.se/Images/39-112644/F%C3%B6rteckning%20clearing-%20och%20bankkontonummer.pdf) (Nordea)
 
 Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige. För närvarande stöds följande banker:
-* Amfa Bank
 * Avanza Bank
 * BlueStep Finans
 * BNP
@@ -20,26 +19,25 @@ Målsättningen är att stödja samtliga banker vilka är verksamma i Sverige. F
 * ICA Banken
 * IKANO Banken
 * JAK Medlemsbank
+* Klarna Bank
 * Landshypotek
 * Lån och Spar Bank Sverige
 * Länsförsäkringar Bank
 * Marginalen Bank
+* MedMera Bank
 * Nordax Bank
 * Nordea
 * Nordnet Bank
 * Resurs Bank
 * Riksgälden
-* Royal Bank of Scotland
 * Santander Consumer Bank
 * SBAB
 * SEB
 * Skandiabanken
 * Sparbanken Syd
+* Svea Bank
 * Swedbank
 * Ålandsbanken
-
-# Demo
-Ett demo finns tillgängligt här: [http://jop.io/projects/kontonummer-js](http://jop.io/projects/kontonummer-js)
 
 # Installation
 ```javascript
